@@ -1,0 +1,26 @@
+{
+  "lookup": {
+    "rules": {},
+    "rule_only_slots": [],
+    "rule_only_loops": [],
+    "rules_for_loop_unhappy_path": {
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}}, {\"active_loop\": {\"name\": \"rating_form\"}, \"prev_action\": {\"action_name\": \"rating_form\"}, \"slots\": {\"order_id\": [1.0]}, \"user\": {\"intent\": \"rate_order\"}}]": "do_not_predict_loop_action",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}}, {\"active_loop\": {\"name\": \"order_form\"}, \"prev_action\": {\"action_name\": \"order_form\"}, \"user\": {\"intent\": \"order_request\"}}]": "do_not_predict_loop_action",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}}, {\"active_loop\": {\"name\": \"rating_form\"}, \"prev_action\": {\"action_name\": \"rating_form\"}, \"user\": {\"intent\": \"rate_order\"}}]": "do_not_predict_loop_action",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}}, {\"active_loop\": {\"name\": \"complain_form\"}, \"prev_action\": {\"action_name\": \"complain_form\"}, \"slots\": {\"complaint_type\": [1.0]}, \"user\": {\"entities\": [\"complaint_type\"], \"intent\": \"complain\"}}]": "do_not_predict_loop_action",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}}, {\"active_loop\": {\"name\": \"track_form\"}, \"prev_action\": {\"action_name\": \"track_form\"}, \"user\": {\"intent\": \"track_order\"}}]": "do_not_predict_loop_action",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}}, {\"active_loop\": {\"name\": \"complain_form\"}, \"prev_action\": {\"action_name\": \"complain_form\"}, \"user\": {\"intent\": \"complain\"}}]": "do_not_predict_loop_action"
+    },
+    "rules_not_in_stories": [
+      "handling active loops and forms - edit_form",
+      "predicting default action with intent session_start",
+      "handling active loops and forms - track_form",
+      "predicting default action with intent back",
+      "predicting default action with intent restart",
+      "handling active loops and forms - rating_form",
+      "handling active loops and forms - complain_form",
+      "handling active loops and forms - order_form",
+      "handling active loops and forms - edit_form - action_listen"
+    ]
+  }
+}

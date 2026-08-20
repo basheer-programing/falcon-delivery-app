@@ -1,0 +1,52 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-budget",
+      "2": "I-budget",
+      "3": "L-budget",
+      "4": "U-budget",
+      "5": "B-delivery_time",
+      "6": "I-delivery_time",
+      "7": "L-delivery_time",
+      "8": "U-delivery_time",
+      "9": "B-product",
+      "10": "I-product",
+      "11": "L-product",
+      "12": "U-product",
+      "13": "B-quantity",
+      "14": "I-quantity",
+      "15": "L-quantity",
+      "16": "U-quantity",
+      "17": "B-store",
+      "18": "I-store",
+      "19": "L-store",
+      "20": "U-store",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-budget": 1,
+      "I-budget": 2,
+      "L-budget": 3,
+      "U-budget": 4,
+      "B-delivery_time": 5,
+      "I-delivery_time": 6,
+      "L-delivery_time": 7,
+      "U-delivery_time": 8,
+      "B-product": 9,
+      "I-product": 10,
+      "L-product": 11,
+      "U-product": 12,
+      "B-quantity": 13,
+      "I-quantity": 14,
+      "L-quantity": 15,
+      "U-quantity": 16,
+      "B-store": 17,
+      "I-store": 18,
+      "L-store": 19,
+      "U-store": 20,
+      "O": 0
+    },
+    "num_tags": 21
+  }
+]

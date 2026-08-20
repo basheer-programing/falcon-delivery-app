@@ -1,0 +1,30 @@
+﻿E:\Falcon Delivery Chatbot\falcon-env\lib\site-packages\rasa\core\tracker_store.py:1044: MovedIn20Warning: Deprecated API features detected! These feature(s) are not compatible with SQLAlchemy 2.0. To prevent incompatible upgrades prior to updating applications, ensure requirements files are pinned to "sqlalchemy<2.0". Set environment variable SQLALCHEMY_WARN_20=1 to show all deprecation warnings.  Set environment variable SQLALCHEMY_SILENCE_UBER_WARNING=1 to silence this message. (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  Base: DeclarativeMeta = declarative_base()
+E:\Falcon Delivery Chatbot\falcon-env\lib\site-packages\rasa\shared\utils\validation.py:134: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  import pkg_resources
+E:\Falcon Delivery Chatbot\falcon-env\lib\site-packages\pkg_resources\__init__.py:2832: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('mpl_toolkits')`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+E:\Falcon Delivery Chatbot\falcon-env\lib\site-packages\pkg_resources\__init__.py:2832: DeprecationWarning: Deprecated call to `pkg_resources.declare_namespace('ruamel')`.
+Implementing implicit namespace packages (as specified in PEP 420) is preferred to `pkg_resources.declare_namespace`. See https://setuptools.pypa.io/en/latest/references/keywords.html#keyword-namespace-packages
+  declare_namespace(pkg)
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+[93mE:\Falcon Delivery Chatbot\falcon-env\lib\site-packages\rasa\shared\core\slot_mappings.py:224: UserWarning: Slot auto-fill has been removed in 3.0 and replaced with a new explicit mechanism to set slots. Please refer to https://rasa.com/docs/rasa/domain#slots to learn more.
+  rasa.shared.utils.io.raise_warning(
+[0m2026-07-21 10:31:09 [1;30mDEBUG   [0m [34mh5py._conv[0m  - Creating converter from 7 to 5
+2026-07-21 10:31:09 [1;30mDEBUG   [0m [34mh5py._conv[0m  - Creating converter from 5 to 7
+2026-07-21 10:31:09 [1;30mDEBUG   [0m [34mh5py._conv[0m  - Creating converter from 7 to 5
+2026-07-21 10:31:09 [1;30mDEBUG   [0m [34mh5py._conv[0m  - Creating converter from 5 to 7
+2026-07-21 10:31:11 [1;30mDEBUG   [0m [34mjax._src.path[0m  - etils.epath was not found. Using pathlib for file I/O.
+E:\Falcon Delivery Chatbot\falcon-env\lib\site-packages\tensorflow\lite\python\util.py:52: DeprecationWarning: jax.xla_computation is deprecated. Please use the AOT APIs.
+  from jax import xla_computation as _xla_computation
+E:\Falcon Delivery Chatbot\falcon-env\lib\site-packages\matplotlib\fontconfig_pattern.py:66: PyparsingDeprecationWarning: 'setParseAction' deprecated - use 'set_parse_action'
+  ).setParseAction(self._family)
+E:\Falcon Delivery Chatbot\falcon-env\lib\site-packages\matplotlib\fontconfig_pattern.py:127: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+  self._parser.parseString(pattern)
+E:\Falcon Delivery Chatbot\falcon-env\lib\site-packages\matplotlib\fontconfig_pattern.py:134: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+  self._parser.resetCache()
+<frozen importlib._bootstrap>:283: DeprecationWarning: the load_module() method is deprecated and slated for removal in Python 3.12; use exec_module() instead
+2026-07-21 10:31:23 [1;30mDEBUG   [0m [34mrasa.telemetry[0m  - Skipping telemetry reporting: no license hash found.
+2026-07-21 10:31:23 [1;30mDEBUG   [0m [34mrasa.cli.utils[0m  - Parameter 'credentials' not set. Using default location 'credentials.yml' instead.
+

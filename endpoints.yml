@@ -1,0 +1,29 @@
+# endpoints.yml
+# نقاط النهاية لخادم الأفعال المخصصة والإشعارات
+
+# خادم الأفعال المخصصة (Rasa Action Server)
+action_endpoint:
+  url: "http://localhost:5055/webhook"
+  # في حالة الإنتاج، يمكن استخدام token للتوثيق
+  # token: "your-secret-token"
+
+# خادم التتبع (لتخزين تاريخ الحوارات)
+# tracker_store:
+#   type: "redis"
+#   url: "localhost"
+#   port: 6379
+#   db: 0
+#   password: ""
+#   use_ssl: false
+
+# وسيط الأحداث (Event Broker) - يستخدم في الإنتاج مع عدة عقد
+# event_broker:
+#   type: "pika"
+#   url: "localhost"
+#   username: "guest"
+#   password: "guest"
+#   queue: "rasa_core_events"
+
+# مخزن الفتحات (Slots Store)
+# slot_store:
+#   type: "InMemorySlotsStore"

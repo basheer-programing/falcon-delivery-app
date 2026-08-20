@@ -1,0 +1,52 @@
+# tests/test_stories.yml
+# اختبار القصص للتحقق من صحة الحوارات
+
+version: "3.1"
+
+stories:
+  - story: طلب بيتزا بسيط
+    steps:
+        - user: |
+            بدي بيتزا
+          intent: order_request
+        - action: utter_searching
+        - action: action_search_products
+        - user: |
+            أكد الطلب
+          intent: confirm_order
+        - action: action_confirm_order_logic
+        - action: utter_confirm_order
+
+  - story: طلب حسب الميزانية
+    steps:
+        - user: |
+            معي 50000 شو فيني اطلب
+          intent: order_by_budget
+        - action: utter_searching
+        - action: action_handle_budget
+        - action: utter_recommendation
+
+  - story: تتبع طلب
+    steps:
+        - user: |
+            أريد تتبع طلبي رقم 12345
+          intent: track_order
+        - action: utter_ask_order_id
+        - user: |
+            12345
+          intent: inform
+        - action: action_track_order
+        - action: utter_tracking_info
+
+  - story: إلغاء الطلب
+    steps:
+        - user: |
+            بدي بيتزا
+          intent: order_request
+        - action: utter_searching
+        - action: action_search_products
+        - user: |
+            ألغي
+          intent: cancel
+        - action: utter_cancel
+        - action: action_reset_slots

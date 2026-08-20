@@ -1,0 +1,14 @@
+[
+  {
+    "name": "food_category",
+    "pattern": "(\\bpizza\\b|\\bburger\\b|\\bshawarma\\b|\\bfried_chicken\\b|\\bpastries\\b|\\bsweets\\b|\\bdrinks\\b|\\bsandwiches\\b|\\bchicken\\b|\\bvegetarian\\b)"
+  },
+  {
+    "name": "size",
+    "pattern": "(\\bsmall\\b|\\bmedium\\b|\\blarge\\b|\\bfamily\\b)"
+  },
+  {
+    "name": "product_attribute",
+    "pattern": "(\\bprice\\b|\\bingredients\\b|\\bsize\\b|\\bavailability\\b)"
+  }
+]

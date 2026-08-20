@@ -1,0 +1,91 @@
+﻿[
+    {
+        "user":  "/restart",
+        "responses":  [
+
+                      ],
+        "dialogue_stage":  null,
+        "awaiting_selection":  null,
+        "awaiting_quantity":  null,
+        "awaiting_cart_confirmation":  null,
+        "selected_index":  null,
+        "selected_product_id":  null,
+        "quantity":  null,
+        "pending_action":  null
+    },
+    {
+        "user":  "بدي بيتزا كبيرة بدون فطر",
+        "responses":  [
+                          "لقيتلك خيار مناسب 👇",
+                          "بيتزا دجاج كبيرة\nمن Falcon Pizza House\nالسعر: 75,000 ل.س\nالمكونات: دجاج، جبنة، صلصة",
+                          "بدك تختارها، ولا ندور على خيار تاني؟"
+                      ],
+        "dialogue_stage":  "awaiting_selection",
+        "awaiting_selection":  true,
+        "awaiting_quantity":  false,
+        "awaiting_cart_confirmation":  false,
+        "selected_index":  null,
+        "selected_product_id":  null,
+        "quantity":  null,
+        "pending_action":  null
+    },
+    {
+        "user":  "الأول",
+        "responses":  [
+                          "تمام، اخترت بيتزا دجاج كبيرة 👌\nقديش بدك منها؟"
+                      ],
+        "dialogue_stage":  "awaiting_quantity",
+        "awaiting_selection":  false,
+        "awaiting_quantity":  true,
+        "awaiting_cart_confirmation":  false,
+        "selected_index":  1,
+        "selected_product_id":  "pza_001",
+        "quantity":  null,
+        "pending_action":  {
+                               "type":  "add_to_cart",
+                               "status":  "collect_quantity",
+                               "product_id":  "pza_001",
+                               "product_name":  "بيتزا دجاج كبيرة"
+                           }
+    },
+    {
+        "user":  "2",
+        "responses":  [
+                          "تمام، طلبك التجريبي:\nبيتزا دجاج كبيرة\nالكمية: 2\nالمجموع التقريبي: 150,000 ل.س",
+                          "أضيفها إلى السلة التجريبية؟"
+                      ],
+        "dialogue_stage":  "awaiting_cart_confirmation",
+        "awaiting_selection":  false,
+        "awaiting_quantity":  false,
+        "awaiting_cart_confirmation":  true,
+        "selected_index":  "2",
+        "selected_product_id":  "pza_001",
+        "quantity":  2,
+        "pending_action":  {
+                               "type":  "add_to_cart",
+                               "status":  "confirm_cart",
+                               "product_id":  "pza_001",
+                               "product_name":  "بيتزا دجاج كبيرة",
+                               "quantity":  2
+                           }
+    },
+    {
+        "user":  "نعم",
+        "responses":  [
+                          "تمت إضافة 2 من بيتزا دجاج كبيرة إلى السلة التجريبية ✅"
+                      ],
+        "dialogue_stage":  "completed",
+        "awaiting_selection":  false,
+        "awaiting_quantity":  false,
+        "awaiting_cart_confirmation":  false,
+        "selected_index":  null,
+        "selected_product_id":  null,
+        "quantity":  null,
+        "pending_action":  {
+                               "type":  "add_to_cart",
+                               "status":  "submitted",
+                               "idempotency_key":  "falcon-add_to_cart-b7d2589ab1155f2ec6f578a3",
+                               "message":  "تمت إضافة 2 من بيتزا دجاج كبيرة إلى السلة التجريبية ✅"
+                           }
+    }
+]

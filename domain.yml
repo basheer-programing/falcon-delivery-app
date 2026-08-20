@@ -1,0 +1,881 @@
+version: "3.1"
+
+
+intents:
+  # أساسيات الترحيب والوداع
+  - greet
+  - goodbye
+  - chitchat
+  - ask_capabilities
+
+  # طلب المنتج (جميع الاحتمالات)
+  - order_request
+  - order_by_budget
+  - order_product_budget
+  - order_from_store
+  - detailed_order_request
+  - order_with_delivery_time
+  - full_order_request
+
+  # خدمات ما قبل الطلب
+  - ask_recommendation
+  - smart_recommendation
+  - ask_weather_food
+  - ask_calories
+  - ask_kids_meal
+  - ask_family_meal
+  - ask_surprise_meal
+  - compare_food
+  - ask_card_restaurants
+  - ask_promo_code
+  - set_delivery_address
+  - ask_allergy_food
+  - ask_urgent_food
+  - thanks
+  - add_to_cart
+  - show_cart
+  - confirm_order
+  - cancel
+
+  # إدارة الطلب
+  - track_order
+  - ask_status
+  - edit_order
+  - rate_order
+
+  # الدفع والدعم والشكاوى
+  - payment_issue
+  - ask_delivery_fee
+  - contact_support
+  - complain
+
+  # الأسئلة الشائعة والعروض والمنتجات
+  - ask_faq
+  - ask_promotion
+  - ask_working_hours
+  - ask_local_offers
+  - ask_about_product
+
+  # تاريخ الطلبات
+  - order_history
+
+  # نية المعلومات (لتعبئة النماذج)
+  - inform
+
+entities:
+  - product
+  - budget
+  - store
+  - delivery_time
+  - order_id
+  - quantity
+  - payment_method
+  - area
+  - rating
+  - complaint_type
+  - health_condition
+  - diet_goal
+  - mood
+  - meal_time
+  - people_count
+
+slots:
+  # فتحات الطلب الأساسية
+  product:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: product
+
+  budget:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: budget
+
+  store:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: store
+
+  delivery_time:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: delivery_time
+
+  order_id:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: order_id
+
+  quantity:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: quantity
+
+  payment_method:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: payment_method
+
+  area:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: area
+
+  health_condition:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: health_condition
+
+  diet_goal:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: diet_goal
+
+  mood:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: mood
+
+  meal_time:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: meal_time
+
+  people_count:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: people_count
+
+  # فتحات التقييم والشكاوى
+  rating:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: rating
+
+  comment:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: complain_form
+            requested_slot: comment
+          - active_loop: rating_form
+            requested_slot: comment
+
+  complaint_type:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: complaint_type
+
+  # فتحة لتخزين حالة المستخدم الحالية
+  user_session_state:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  # سلة الطلب - يتم تحديثها من actions.py
+  cart:
+    type: list
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+forms:
+  # نموذج الطلب الرئيسي (يغطي منتج، ميزانية، متجر، وقت)
+  order_form:
+    required_slots:
+      - product
+      - budget
+      - store
+      - delivery_time
+
+  # نموذج تتبع الطلب
+  track_form:
+    required_slots:
+      - order_id
+
+  # نموذج تعديل الطلب
+  edit_form:
+    required_slots:
+      - product
+      - quantity
+      - store
+      - delivery_time
+
+  # نموذج تقديم شكوى (جديد)
+  complain_form:
+    required_slots:
+      - complaint_type
+      - comment
+      - order_id
+
+  # نموذج التقييم (جديد)
+  rating_form:
+    required_slots:
+      - rating
+      - comment
+
+responses:
+
+
+  utter_greet:
+    - text: |
+        🦅 مرحباً بك في **فالكون دليفري**!
+        معك المساعد **بشير الحبشي**. شو بقدر ساعدك اليوم؟
+        فيني ساعدك تختار أكلة، مطعم، ميزانية، عرض أو وجبة مناسبة لهدفك الغذائي.
+        اختر مما يلي:
+      buttons:
+        - title: "🛒 طلب جديد"
+          payload: "/order_request"
+        - title: "📍 تتبع طلبي"
+          payload: "/track_order"
+        - title: "❓ مساعدة"
+          payload: "/ask_faq"
+        - title: "🏷️ عروض اليوم"
+          payload: "/ask_promotion"
+        - title: "📞 اتصل بالدعم"
+          payload: "/contact_support"
+    - text: |
+        أهلان وسهلان بك في فالكون! 🚀
+        أنا روبوت الدعم الذكي، جاهز لمساعدتك في أي وقت.
+        كيف يمكنني أن أخدمك اليوم؟
+      buttons:
+        - title: "طلب وجبة"
+          payload: "/order_request"
+        - title: "تتبع شحنة"
+          payload: "/track_order"
+        - title: "عروض وخصومات"
+          payload: "/ask_promotion"
+        - title: "شكوى أو استفسار"
+          payload: "/contact_support"
+    - text: |
+        السلام عليكم! 🌟
+        مرحباً بكم في خدمة فالكون للتوصيل.
+        أنا هنا لتسهيل طلباتكم وجعل تجربتكم ممتعة.
+        ماذا تريد أن تفعل الآن؟
+      buttons:
+        - title: "طلب جديد"
+          payload: "/order_request"
+        - title: "تتبع طلب"
+          payload: "/track_order"
+        - title: "التواصل مع الدعم"
+          payload: "/contact_support"
+    - text: |
+        🎯 مرحباً! أنت الآن في فالكون دليفري.
+        نقدم لك أسرع خدمة توصيل في دمشق والمدن السورية.
+        اختر الخيار المناسب لك:
+      buttons:
+        - title: "اطلب الآن"
+          payload: "/order_request"
+        - title: "تتبع"
+          payload: "/track_order"
+        - title: "العروض"
+          payload: "/ask_promotion"
+
+  utter_goodbye:
+    - text: "مع السلامة! نشكرك على استخدامك Falcon Delivery. نتمنى لك يوماً سعيداً! 🌟"
+    - text: "إلى اللقاء! أتمنى أن تكون وجبتك لذيذة. في خدمتك دائماً."
+    - text: "وداعاً! نأمل أن نراك قريباً. لا تنسَ تقييم خدمتنا."
+    - text: "شكراً لثقتك بنا. مع السلامة، ونحن في انتظار طلبك القادم."
+    - text: "سلام! إذا احتجت شيئاً، نحن هنا. إلى اللقاء."
+    - text: "🕊️ نتركك في أمان الله. شكراً لتجربة فالكون دليفري."
+    - text: "👋 باي باي! نتمنى أن تكون راضياً عن خدمتنا. تواصل معنا لأي استفسار."
+
+  utter_chitchat:
+    - text: "أنا بخير وجاهز أساعدك بطلب وجبة أو تتبع طلبك. شو بتحب تعمل؟"
+    - text: "أهلاً فيك! فينا نحكي عن الطلبات، المطاعم، الأسعار، التوصيل والعروض."
+    - text: "تمام، أنا معك. اكتب مثلاً: بدي بيتزا، أو تتبع طلبي، أو شو في عروض؟"
+
+  utter_capabilities:
+    - text: |
+        بقدر أساعدك في:
+        • البحث عن وجبة أو مطعم
+        • اقتراح وجبات حسب الميزانية
+        • إضافة المنتجات للسلة وتأكيد الطلب
+        • تتبع الطلب وتحديث حالته
+        • العروض، الدفع، الشكاوى والتقييم
+        اكتب طلبك بطريقتك الطبيعية وسأطلب التفاصيل الناقصة منك.
+
+  utter_thanks:
+    - text: "العفو يا غالي، بالخدمة دائماً. بالهنا والشفا 😊"
+    - text: "تكرم عيونك، سعدت بخدمتك. إذا بدك شي تاني أنا موجود."
+
+
+  utter_searching:
+    - text: "🔍 جارٍ البحث عن أفضل العروض التي تناسب احتياجاتك... لحظة من فضلك."
+    - text: "⏳ أعمل على تجهيز قائمة الوجبات المتوفرة حسب طلبك."
+    - text: "📋 جارٍ تحليل طلبك وعرض الخيارات المناسبة... انتظر قليلاً."
+    - text: "🔄 نبحث في قائمة المتاجر والمنتجات... سيتم الرد خلال ثوان."
+    - text: "🧐 دعني أتحقق من العروض المتاحة لك... لحظة واحدة."
+    - text: "⚡ جارٍ الاتصال بقاعدة البيانات لعرض المنتجات المتاحة."
+    - text: "📡 نبحث في منيو المطاعم الشريكة... سيتم عرض النتائج فوراً."
+
+
+  utter_recommendation:
+    - text: |
+        📋 بناءً على طلبك، أقترح عليك الأصناف التالية الأكثر مبيعاً:
+        1. 🍗 شاورما دجاج (مع بطاطا ومشروب) - 35000 ليرة
+        2. 🍕 بيتزا عائلية (جبنة وزعتر) - 50000 ليرة
+        3. 🍔 برغر دبل (بصل مقلي وجبنة) - 40000 ليرة
+        هل ترغب بإضافة أحدها إلى السلة؟
+      buttons:
+        - title: "شاورما"
+          payload: '/add_to_cart{"product": "شاورما"}'
+        - title: "بيتزا عائلية"
+          payload: '/add_to_cart{"product": "بيتزا عائلية"}'
+        - title: "برغر"
+          payload: '/add_to_cart{"product": "برغر"}'
+        - title: "لا شكراً"
+          payload: "/cancel"
+    - text: |
+        🔥 بناءً على تقييمات العملاء، إليك أفضل الوجبات اليوم:
+        • شاورما اللحم الخاصة - 40000 ليرة
+        • بيتزا المارجريتا - 30000 ليرة
+        • سلطة التبولة الطازجة - 15000 ليرة
+        ماذا تختار؟
+      buttons:
+        - title: "شاورما لحم"
+          payload: '/add_to_cart{"product": "شاورما لحم"}'
+        - title: "بيتزا مارجريتا"
+          payload: '/add_to_cart{"product": "بيتزا مارجريتا"}'
+        - title: "تبولة"
+          payload: '/add_to_cart{"product": "تبولة"}'
+        - title: "لا شي"
+          payload: "/cancel"
+    - text: |
+        🥇 الأكثر طلباً اليوم:
+        • وجبة الدجاج المشوي مع الأرز - 60000 ليرة
+        • برغر تشييز مع بطاطا - 35000 ليرة
+        • كنافة نابلسية - 15000 ليرة
+        هل تريد إضافة واحدة؟
+      buttons:
+        - title: "دجاج مشوي"
+          payload: '/add_to_cart{"product": "دجاج مشوي"}'
+        - title: "برغر تشييز"
+          payload: '/add_to_cart{"product": "برغر تشييز"}'
+        - title: "كنافة"
+          payload: '/add_to_cart{"product": "كنافة"}'
+    - text: |
+        💎 اقتراحاتي الذكية لك (بناءً على طلباتك السابقة):
+        • 🍕 بيتزا عائلية بالجبنة - 48000 ليرة
+        • 🥙 شاورما دجاج مع صوص الثوم - 32000 ليرة
+        • 🍲 شوربة العدس مع الليمون - 8000 ليرة
+        ماذا تفضل؟
+      buttons:
+        - title: "بيتزا عائلية"
+          payload: '/add_to_cart{"product": "بيتزا عائلية"}'
+        - title: "شاورما دجاج"
+          payload: '/add_to_cart{"product": "شاورما دجاج"}'
+        - title: "شوربة عدس"
+          payload: '/add_to_cart{"product": "شوربة عدس"}'
+    - text: |
+        🌟 خيارات اقتصادية ممتازة:
+        1. فلافل ساندويش - 12000 ليرة
+        2. فطيرة زعتر - 8000 ليرة
+        3. حمص بالطحينة - 7000 ليرة
+        هل ترغب بواحد منها؟
+      buttons:
+        - title: "فلافل"
+          payload: '/add_to_cart{"product": "فلافل"}'
+        - title: "فطيرة زعتر"
+          payload: '/add_to_cart{"product": "فطيرة زعتر"}'
+        - title: "حمص"
+          payload: '/add_to_cart{"product": "حمص"}'
+
+ 
+  utter_ask_product:
+    - text: "🍽️ ما هو المنتج الذي ترغب في طلبه؟ (مثل: بيتزا، شاورما، برغر، كنافة)"
+    - text: "📝 يرجى تحديد المنتج المطلوب: (مثال: بيتزا عائلية، شاورما دجاج)"
+    - text: "🛒 أخبرني بالمنتج الذي ترغب به، وسأبحث عنه."
+    - text: "🤔 ما هو نوع الوجبة التي تريدها؟"
+    - text: "📋 من فضلك اكتب اسم المنتج الذي تريد شراءه."
+
+  utter_ask_budget:
+    - text: "💰 كم الميزانية المتوفرة لديك لهذا الطلب؟ (مثلاً: 50000 أو 30 ألف)"
+    - text: "💵 ما هو المبلغ الذي ترغب في إنفاقه؟"
+    - text: "🧮 حدد السعر الذي يناسبك."
+    - text: "🏷️ ما هي ميزانيتك التقريبية؟"
+    - text: "💳 كم تقدر قيمة الطلب الذي تريده؟"
+
+  utter_ask_store:
+    - text: "🏪 من أي متجر أو مطعم ترغب في الطلب؟ (مثل: مطعم النور، مطعم الشام)"
+    - text: "📍 حدد اسم المطعم أو المتجر الذي تفضله."
+    - text: "🍽️ من أي مطعم تريد أن تطلب؟"
+    - text: "🏠 هل لديك مطعم مفضل تريد الطلب منه؟"
+    - text: "📌 أين تريد أن تطلب وجبتك؟"
+
+  utter_ask_delivery_time:
+    - text: "⏰ متى ترغب في استلام طلبك؟ (مثلاً: خلال نصف ساعة، أو عاجل)"
+    - text: "⌚ حدد وقت التوصيل المناسب لك."
+    - text: "🕒 في أي وقت تريد وصول الطلب؟"
+    - text: "📅 متى تريد أن يصل طلبك؟"
+    - text: "⏳ اختر الوقت المناسب للتوصيل:"
+
+  utter_ask_order_id:
+    - text: "🔢 يرجى إدخال رقم الطلب الذي تريد تتبعه (موجود في رسالة التأكيد)."
+    - text: "📋 أدخل رقم الطلب المكون من 4-6 أرقام."
+    - text: "🧾 ما هو رقم الطلب الذي تريد الاستعلام عنه؟"
+    - text: "📑 من فضلك أرسل رقم الطلب الخاص بك."
+
+  utter_ask_quantity:
+    - text: "🔢 كم عدد {product} الذي تريده؟"
+    - text: "📦 حدد الكمية المطلوبة من {product}."
+    - text: "🧮 كم وحدة من {product} تريد إضافتها؟"
+    - text: "📊 كم طلبية من {product} ترغب بها؟"
+
+  utter_ask_rating:
+    - text: "⭐ كيف تقيم تجربتك معنا؟ من 1 إلى 5 نجوم."
+      buttons:
+        - title: "⭐ 5 نجوم"
+          payload: '/rate_order{"rating": "5"}'
+        - title: "⭐⭐ 4 نجوم"
+          payload: '/rate_order{"rating": "4"}'
+        - title: "⭐⭐⭐ 3 نجوم"
+          payload: '/rate_order{"rating": "3"}'
+        - title: "⭐⭐⭐⭐ 2 نجوم"
+          payload: '/rate_order{"rating": "2"}'
+        - title: "⭐ 1 نجمة"
+          payload: '/rate_order{"rating": "1"}'
+    - text: "🌟 كيف كانت تجربتك مع السائق والمطعم؟"
+      buttons:
+        - title: "ممتاز"
+          payload: '/rate_order{"rating": "5"}'
+        - title: "جيد"
+          payload: '/rate_order{"rating": "4"}'
+        - title: "مقبول"
+          payload: '/rate_order{"rating": "3"}'
+        - title: "سيء"
+          payload: '/rate_order{"rating": "2"}'
+        - title: "كارثة"
+          payload: '/rate_order{"rating": "1"}'
+
+  utter_ask_complaint_type:
+    - text: "📝 ما هو نوع الشكوى؟ (تأخر، منتج خاطئ، منتج تالف، سوء تعامل، أخرى)"
+    - text: "❓ اختر نوع المشكلة التي تواجهها:"
+      buttons:
+        - title: "تأخر التوصيل"
+          payload: '/complain{"complaint_type": "تأخر"}'
+        - title: "منتج خاطئ"
+          payload: '/complain{"complaint_type": "منتج خاطئ"}'
+        - title: "منتج تالف"
+          payload: '/complain{"complaint_type": "منتج تالف"}'
+        - title: "سوء تعامل"
+          payload: '/complain{"complaint_type": "سوء تعامل"}'
+        - title: "أخرى"
+          payload: '/complain{"complaint_type": "أخرى"}'
+
+  utter_ask_comment:
+    - text: "✍️ يرجى كتابة تفاصيل الشكوى بالتفصيل (ماذا حدث بالضبط؟)."
+    - text: "📝 أخبرني بما حدث معك وسنحل المشكلة فوراً."
+
+
+  utter_added_to_cart:
+    - text: "✅ تم إضافة {product} إلى سلة الطلب بنجاح. هل تريد إضافة شيء آخر أم تريد تأكيد الطلب؟"
+      buttons:
+        - title: "إضافة آخر"
+          payload: "/order_request"
+        - title: "تأكيد الطلب"
+          payload: "/confirm_order"
+        - title: "عرض السلة"
+          payload: "/show_cart"
+    - text: "👍 أضفنا {product} إلى سلتك. ماذا تريد أن تفعل الآن؟"
+      buttons:
+        - title: "أضف منتجاً آخر"
+          payload: "/order_request"
+        - title: "أكمل الطلب"
+          payload: "/confirm_order"
+        - title: "شاهد السلة"
+          payload: "/show_cart"
+    - text: "🛒 تمت إضافة {product} بنجاح. رغبة في المزيد؟"
+      buttons:
+        - title: "نعم، أضف آخر"
+          payload: "/order_request"
+        - title: "لا، أنهي الطلب"
+          payload: "/confirm_order"
+    - text: "🍕 تم إضافة {product} × {quantity}. السلة في انتظارك."
+      buttons:
+        - title: "أضف المزيد"
+          payload: "/order_request"
+        - title: "تأكيد"
+          payload: "/confirm_order"
+        - title: "إلغاء الكل"
+          payload: "/cancel"
+
+  utter_show_cart:
+    - text: |
+        🛒 محتويات سلتك الحالية:
+        - {product} (الكمية: {quantity}) بسعر محسوب.
+        المجموع الكلي سيتم حسابه عند التأكيد.
+        هل ترغب بالتعديل أم التأكيد؟
+      buttons:
+        - title: "تأكيد الطلب"
+          payload: "/confirm_order"
+        - title: "إلغاء الكل"
+          payload: "/cancel"
+        - title: "تعديل الكميات"
+          payload: "/edit_order"
+    - text: |
+        📋 سلة الطلب تحتوي على:
+        - {product} × {quantity}
+        المجموع التقريبي: سيظهر عند التأكيد.
+        ماذا تريد أن تفعل؟
+      buttons:
+        - title: "تأكيد"
+          payload: "/confirm_order"
+        - title: "إلغاء"
+          payload: "/cancel"
+    - text: |
+        🧾 ملخص سلة المشتريات:
+        المنتج: {product}
+        الكمية: {quantity}
+        السعر الإجمالي: سيتم حسابه في الخطوة التالية.
+        هل أنت مستعد للتأكيد؟
+      buttons:
+        - title: "نعم، أؤكد"
+          payload: "/confirm_order"
+        - title: "لا، ألغي"
+          payload: "/cancel"
+
+  utter_confirm_order:
+    - text: "📦 تم تأكيد طلبك بنجاح! رقم الطلب هو **#FAL-{order_id}**.\nسيتم إشعار أقرب سائق لتوصيله.\nيمكنك تتبع طلبك الآن عبر خيار 'تتبع الطلب'."
+      buttons:
+        - title: "تتبع طلبي"
+          payload: '/track_order{"order_id": "{order_id}"}'
+        - title: "رجوع للرئيسية"
+          payload: "/greet"
+    - text: "🎉 تم استلام طلبك! ستحصل على إشعار فور العثور على سائق. شكراً لثقتك بنا!"
+      buttons:
+        - title: "متابعة"
+          payload: "/greet"
+    - text: "✅ طلبك رقم {order_id} قيد المعالجة. سنخبرك عند إسناده للسائق."
+      buttons:
+        - title: "تتبع"
+          payload: '/track_order{"order_id": "{order_id}"}'
+    - text: "💳 تم تأكيد طلبك وطريقة الدفع: {payment_method}. رقم الطلب: {order_id}."
+      buttons:
+        - title: "تتبع الطلب"
+          payload: '/track_order{"order_id": "{order_id}"}'
+
+  utter_cancel:
+    - text: "❌ تم إلغاء العملية بنجاح. هل تحتاج إلى مساعدة في شيء آخر؟"
+      buttons:
+        - title: "نعم، أريد مساعدة"
+          payload: "/ask_faq"
+        - title: "لا، شكراً"
+          payload: "/goodbye"
+    - text: "تم الإلغاء. نأمل أن نراك مجدداً قريباً."
+    - text: "👍 تم إلغاء الطلب. إذا غيرت رأيك، نحن هنا."
+    - text: "🚫 ألغينا طلبك بنجاح. هل تريد طلباً آخر؟"
+      buttons:
+        - title: "طلب جديد"
+          payload: "/order_request"
+        - title: "خروج"
+          payload: "/goodbye"
+
+ 
+  utter_tracking_info:
+    - text: |
+        📍 طلبك رقم #{order_id} في الطريق إليك!
+        حالة الطلب الحالية: **قيد التوصيل**.
+        السائق: أحمد (تقييم 4.8 نجوم).
+        متوقع وصوله خلال 10 دقائق تقريباً.
+      buttons:
+        - title: "اتصل بالسائق"
+          payload: "/contact_support"
+        - title: "عرض على الخريطة"
+          payload: "/ask_faq"
+    - text: |
+        🚚 طلبك #{order_id}:
+        - الحالة: تم استلامه من المطعم.
+        - السائق في طريقه إليك.
+        - الوقت المتوقع: 15 دقيقة.
+      buttons:
+        - title: "تحديث الموقع"
+          payload: "/track_order"
+    - text: |
+        ✅ طلبك #{order_id} تم تسليمه بنجاح!
+        نأمل أن تكون وجبتك لذيذة.
+        هل ترغب في تقييم الخدمة؟
+      buttons:
+        - title: "تقييم"
+          payload: "/rate_order"
+        - title: "لا، شكراً"
+          payload: "/goodbye"
+    - text: |
+        ⏳ طلبك #{order_id} ما زال قيد التحضير في المطعم.
+        سيتم إشعارك فور تجهيزه.
+        وقت التحضير المتوقع: 20 دقيقة.
+      buttons:
+        - title: "تحديث"
+          payload: "/track_order"
+        - title: "اتصل بالمطعم"
+          payload: "/contact_support"
+
+  utter_payment_issue:
+    - text: "💳 يبدو أن هناك مشكلة في الدفع. يرجى التأكد من رصيدك في محفظة ShamCash، أو اختر الدفع النقدي عند الاستلام."
+      buttons:
+        - title: "الدفع النقدي"
+          payload: '/order_with_delivery_time{"payment_method": "cash"}'
+        - title: "إعادة المحاولة"
+          payload: "/payment_issue"
+        - title: "اتصل بالدعم"
+          payload: "/contact_support"
+    - text: "⚠️ فشلت عملية الدفع. هل تريد الدفع نقداً عند الاستلام بدلاً من ذلك؟"
+      buttons:
+        - title: "نعم، نقدي"
+          payload: '/order_with_delivery_time{"payment_method": "cash"}'
+        - title: "لا، سأجرب لاحقاً"
+          payload: "/cancel"
+    - text: "💢 عذراً، عملية الدفع عبر ShamCash غير ممكنة حالياً. يمكنك الدفع نقداً عند الاستلام."
+      buttons:
+        - title: "أوافق على الدفع النقدي"
+          payload: '/order_with_delivery_time{"payment_method": "cash"}'
+        - title: "إلغاء الطلب"
+          payload: "/cancel"
+
+
+  utter_faq_cost:
+    - text: "💰 رسوم التوصيل لدينا تعتمد على المسافة. الحد الأدنى 5000 ليرة، وتزداد حسب عدد الكيلومترات. يمكنك الاستعلام عن التكلفة الدقيقة أثناء إنشاء الطلب."
+    - text: "💵 أجرة التوصيل: 5000 ليرة أساسية + 1000 ليرة لكل كيلومتر إضافي بعد 2 كيلو."
+    - text: "💸 للتوصيل داخل مدينة دمشق: 5000 ليرة ثابتة. لريف دمشق: تبدأ من 8000 ليرة حسب المنطقة."
+
+  utter_faq_time:
+    - text: "⏱️ أوقات العمل: نستقبل الطلبات يومياً من الساعة 9 صباحاً حتى 12 منتصف الليل. التوصيل متاح طوال هذه الفترة."
+    - text: "🕘 دوامنا: 9 صباحاً – 12 ليلاً، طوال أيام الأسبوع."
+    - text: "🌙 في شهر رمضان: نستقبل الطلبات من 10 صباحاً حتى 2 بعد منتصف الليل."
+
+  utter_faq_payment:
+    - text: "💳 طرق الدفع المتاحة: الدفع النقدي عند الاستلام، والدفع الإلكتروني عبر ShamCash. قريباً سنضيف الدفع بالبطاقة."
+    - text: "🤑 يمكنك الدفع نقداً أو عبر ShamCash. اختر ما يناسبك."
+    - text: "💳 للدفع عبر ShamCash، تأكد من وجود رصيد كافٍ في محفظتك."
+
+  utter_faq_support:
+    - text: |
+        📞 يمكنك التواصل مع خدمة العملاء عبر:
+        • الهاتف: 0964368135 (الدعم الفني: محمد بشير الحبشي)
+        • البريد الإلكتروني: support@falcondelivery.com
+        • واتساب: 0964368135
+    - text: |
+        🆘 للدعم الفني، اتصل بنا على 0964368135، أو أرسل بريداً إلى support@falcondelivery.com.
+        فريق الدعم يعمل 24/7.
+    - text: |
+        👨‍💻 مسؤول الدعم الفني: محمد بشير حسن الحبشي
+        📱 رقم الجوال: 0964368135
+        🕘 متاح من 9 صباحاً حتى 12 ليلاً.
+
+  utter_faq_cancel:
+    - text: "❌ يمكنك إلغاء الطلب خلال 3 دقائق من إنشائه، بشرط ألا يكون قد تم إسناده إلى سائق. بعد ذلك، يرجى الاتصال بالدعم."
+    - text: "⏳ مدة الإلغاء المسموحة: 3 دقائق من وقت الطلب."
+    - text: "🔄 إذا تجاوزت المدة، يمكنك الاتصال بفريق الدعم على 0964368135 للمساعدة."
+
+  utter_faq_return:
+    - text: "📦 سياسة الاسترجاع: إذا كان المنتج تالفاً أو خاطئاً، يمكنك إرجاعه خلال 24 ساعة من الاستلام. يرجى التواصل مع الدعم."
+    - text: "🔄 يمكنك إرجاع الطلب في حال وجود عيب في المنتج. اتصل بالدعم لترتيب العملية."
+    - text: "📞 للاسترجاع، اتصل على 0964368135 وأخبرنا برقم الطلب."
+
+  utter_faq_promotion:
+    - text: "🎁 العروض الحالية: خصم 10% على أول طلب، وتوصيل مجاني للطلبات فوق 100000 ليرة. تابعنا للعروض الجديدة."
+    - text: "🏷️ كود الخصم: FALCON10 للخصم 10% على طلبك الأول. ساري حتى نهاية الشهر."
+    - text: "🔥 عرض اليوم: بيتزا عائلية + مشروب بسعر 45000 ليرة بدلاً من 55000."
+
+  utter_default_faq:
+    - text: "📝 لدي معلومات عن أوقات العمل، طرق الدفع، رسوم التوصيل، والإلغاء. هل لديك سؤال محدد؟"
+      buttons:
+        - title: "رسوم التوصيل"
+          payload: "/ask_delivery_fee"
+        - title: "طرق الدفع"
+          payload: "/payment_issue"
+        - title: "الإلغاء"
+          payload: "/cancel"
+        - title: "الدعم"
+          payload: "/contact_support"
+    - text: "❓ يمكنني مساعدتك في العديد من الأمور. اختر مما يلي:"
+      buttons:
+        - title: "ساعات العمل"
+          payload: "/ask_working_hours"
+        - title: "العروض"
+          payload: "/ask_promotion"
+        - title: "الدعم الفني"
+          payload: "/contact_support"
+        - title: "الاسترجاع"
+          payload: "/ask_faq"
+
+
+  utter_thanks_rating:
+    - text: "🙏 شكراً لتقييمك! ملاحظاتك تساعدنا على تحسين الخدمة."
+    - text: "❤️ نقدر رأيك. سنعمل على تحسين خدماتنا بناءً على تقييمك."
+    - text: "⭐ شكراً على تقييمك {rating} نجوم. تعليقك مهم جداً لنا."
+
+  utter_complaint_received:
+    - text: "📝 تم استلام شكواك بنجاح. سيتم التواصل معك خلال 24 ساعة لحل المشكلة."
+    - text: "✅ شكراً لإبلاغنا. فريق الدعم يعمل على حل مشكلتك حالياً."
+    - text: "📞 سيتم الاتصال بك قريباً على الرقم المسجل لحل شكواك. يمكنك أيضاً الاتصال بنا على 0964368135."
+
+ 
+  utter_edit_confirmation:
+    - text: "📝 تم تعديل طلبك بنجاح. هل تريد تأكيد التعديلات؟"
+      buttons:
+        - title: "تأكيد التعديل"
+          payload: "/confirm_order"
+        - title: "إلغاء التعديل"
+          payload: "/cancel"
+    - text: "🔄 تم تحديث طلبك. المنتج الجديد: {product}، الكمية: {quantity}."
+      buttons:
+        - title: "تأكيد"
+          payload: "/confirm_order"
+        - title: "تراجع"
+          payload: "/cancel"
+
+  utter_order_history:
+    - text: |
+        📜 تاريخ طلباتك السابقة:
+        1. #FAL-12345 - بيتزا عائلية - 50000 ليرة - تم التوصيل
+        2. #FAL-12346 - شاورما دجاج - 35000 ليرة - قيد التوصيل
+        3. #FAL-12347 - برغر دبل - 40000 ليرة - ملغي
+        هل تريد إعادة طلب أي منها؟
+      buttons:
+        - title: "إعادة طلب #12345"
+          payload: '/order_request{"product": "بيتزا عائلية"}'
+        - title: "إعادة طلب #12346"
+          payload: '/order_request{"product": "شاورما دجاج"}'
+        - title: "لا، شكراً"
+          payload: "/goodbye"
+    - text: "📋 لديك 5 طلبات سابقة. آخر طلب كان بيتزا عائلية. هل تريد تكراره؟"
+      buttons:
+        - title: "نعم، كرره"
+          payload: '/order_request{"product": "بيتزا عائلية"}'
+        - title: "لا، شكراً"
+          payload: "/goodbye"
+
+ 
+  utter_local_offers:
+    - text: "📍 عروض منطقتك:\n- مطعم النور: خصم 15% على البيتزا\n- مطعم الشام: وجبة شاورما + مشروب بسعر 25000\n- توصيل مجاني للطلبات فوق 50000"
+      buttons:
+        - title: "اطلب من النور"
+          payload: '/order_from_store{"store": "مطعم النور"}'
+        - title: "اطلب من الشام"
+          payload: '/order_from_store{"store": "مطعم الشام"}'
+    - text: "🏷️ في منطقتك ({area})، هذه العروض المتاحة:\n• بيتزا عائلية بسعر 45000 بدلاً من 50000\n• شاورما دجاج مع بطاطا بسعر 30000"
+    - text: "🎯 عروض حصرية لمدينة دمشق: خصم 20% على جميع الطلبات فوق 70000 ليرة."
+
+  utter_ask_about_product_response:
+    - text: "📋 معلومات عن {product}:\n- المكونات: ...\n- السعر: ...\n- وقت التحضير: ..."
+    - text: "🍕 {product}: وجبة شهية تتكون من ... السعر: ..."
+
+
+  utter_ask_rephrase:
+    - text: "آسف، لم أفهم طلبك تماماً. هل يمكنك إعادة صياغته بطريقة أوضح؟"
+    - text: "😅 عذراً، لم أستوعب ما تريده. حاول أن تكون أكثر تحديداً."
+    - text: "🤔 لم أتمكن من فهمك. يرجى كتابة طلبك بشكل أوضح."
+    - text: "🧐 عفواً، لم أفهم. هل يمكنك كتابة طلبك مرة أخرى مع تفاصيل أكثر؟"
+
+  utter_submit:
+    - text: "✅ تم استلام بياناتك. جارٍ معالجة طلبك..."
+    - text: "📤 تم إرسال طلبك بنجاح. انتظر الرد..."
+    - text: "🔄 جارٍ تجهيز طلبك، سيتم الرد خلال ثوان..."
+
+  utter_slots_values:
+    - text: "📋 بيانات طلبك:\n- المنتج: {product}\n- الميزانية: {budget}\n- المتجر: {store}\n- وقت التوصيل: {delivery_time}"
+    - text: "🛒 ملخص الطلب:\nالمنتج: {product}\nالكمية: {quantity}\nالمتجر: {store}\nوقت التوصيل: {delivery_time}"
+
+
+  utter_developer_info:
+    - text: |
+        👨‍💻 تم تطوير هذا النظام بواسطة:
+        • الطالب: محمد بشير حسن الحبشي
+        • رقم الهاتف: 0964368135
+        • جامعة الشام الخاصة - كلية الهندسة المعلوماتية
+        • مشروع التخرج: Falcon Delivery
+    - text: |
+        🦅 فالكون دليفري - النسخة 1.0
+        المطور الرئيسي: محمد بشير الحبشي
+        للتواصل: 0964368135
+        البريد الإلكتروني: mohammad@falcondelivery.com
+
+actions:
+  # أفعال البحث والعرض الأساسية
+  - action_search_products
+  - action_handle_budget
+  - action_smart_recommendation
+  - action_contextual_help
+  - action_show_recommendations
+  - action_filter_by_area
+
+  # أفعال السلة والطلب
+  - action_add_to_cart
+  - action_confirm_order_logic
+  - action_cancel_order
+  - action_reset_slots
+  - action_calculate_total
+
+  # أفعال التتبع والدفع
+  - action_track_order
+  - action_payment_process
+  - action_validate_payment
+  - action_update_order_status
+
+  # أفعال الدعم والتقييم والشكاوى
+  - action_contact_support
+  - action_submit_rating
+  - action_handle_complaint
+  - action_handle_complaint_form
+
+  # أفعال التعديل والتاريخ
+  - action_edit_order
+  - action_show_order_history
+  - action_set_quantity
+  - action_reorder_previous
+
+  # أفعال العروض والمنتجات
+  - action_show_promotions
+  - action_show_local_offers
+  - action_show_product_details
+
+  # أفعال النماذج (التحكم في تدفق النماذج)
+  - action_set_product_slot
+  - action_set_budget_slot
+  - action_set_store_slot
+  - action_set_delivery_time_slot
+  - action_set_rating_slot
+  - action_set_complaint_type_slot
+  - action_validate_budget
+
+  # أفعال الجلسة والمستخدم
+  - action_save_user_preference
+  - action_check_user_history
+
+session_config:
+  session_expiration_time: 60  # دقيقة
+  carry_over_slots_to_new_session: true

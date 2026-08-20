@@ -1,0 +1,1729 @@
+# Falcon Delivery - Rasa stories.yml المصحح
+# متوافق مع domain.yml و actions.py المصححين
+# عدد القصص بعد إزالة التعارضات: 81
+
+version: '3.1'
+stories:
+- story: ترحيب بسيط ثم مغادرة
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: goodbye
+  - action: utter_goodbye
+- story: ترحيب ثم مساعدة
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_faq
+  - action: utter_default_faq
+- story: ترحيب ثم عروض
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_promotion
+  - action: action_show_promotions
+- story: ترحيب ثم دعم
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: contact_support
+  - action: action_contact_support
+- story: ترحيب ثم ساعات العمل
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_working_hours
+  - action: utter_faq_time
+- story: توصية صحية عامة
+  steps:
+  - intent: smart_recommendation
+    entities:
+    - diet_goal: ريجيم
+  - slot_was_set:
+    - diet_goal: ريجيم
+  - action: action_smart_recommendation
+- story: توصية للرياضيين
+  steps:
+  - intent: smart_recommendation
+    entities:
+    - diet_goal: رياضي
+  - slot_was_set:
+    - diet_goal: رياضي
+  - action: action_smart_recommendation
+- story: توصية حسب الميزانية ووقت الفطور
+  steps:
+  - intent: smart_recommendation
+    entities:
+    - budget: 30000
+    - meal_time: الصباح
+  - slot_was_set:
+    - budget: 30000
+    - meal_time: الصباح
+  - action: action_smart_recommendation
+- story: طلب بيتزا مباشر
+  steps:
+  - intent: order_request
+    entities:
+    - product: بيتزا
+  - slot_was_set:
+    - product: بيتزا
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: بيتزا
+  - slot_was_set:
+    - product: بيتزا
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12345'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب شاورما مباشر
+  steps:
+  - intent: order_request
+    entities:
+    - product: شاورما
+  - slot_was_set:
+    - product: شاورما
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: شاورما
+  - slot_was_set:
+    - product: شاورما
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12346'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب برغر مباشر
+  steps:
+  - intent: order_request
+    entities:
+    - product: برغر
+  - slot_was_set:
+    - product: برغر
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: برغر
+  - slot_was_set:
+    - product: برغر
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12347'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب فطيرة جبنة مباشر
+  steps:
+  - intent: order_request
+    entities:
+    - product: فطيرة جبنة
+  - slot_was_set:
+    - product: فطيرة جبنة
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: فطيرة جبنة
+  - slot_was_set:
+    - product: فطيرة جبنة
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12348'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب مناقيش مباشر
+  steps:
+  - intent: order_request
+    entities:
+    - product: مناقيش
+  - slot_was_set:
+    - product: مناقيش
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: مناقيش
+  - slot_was_set:
+    - product: مناقيش
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12349'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب كنافة مباشر
+  steps:
+  - intent: order_request
+    entities:
+    - product: كنافة
+  - slot_was_set:
+    - product: كنافة
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: كنافة
+  - slot_was_set:
+    - product: كنافة
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12350'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب عصير مباشر
+  steps:
+  - intent: order_request
+    entities:
+    - product: عصير برتقال
+  - slot_was_set:
+    - product: عصير برتقال
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: عصير برتقال
+  - slot_was_set:
+    - product: عصير برتقال
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12351'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب قهوة مباشر
+  steps:
+  - intent: order_request
+    entities:
+    - product: قهوة
+  - slot_was_set:
+    - product: قهوة
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: قهوة
+  - slot_was_set:
+    - product: قهوة
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12352'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب وجبة عائلية مباشر
+  steps:
+  - intent: order_request
+    entities:
+    - product: وجبة عائلية
+  - slot_was_set:
+    - product: وجبة عائلية
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: وجبة عائلية
+  - slot_was_set:
+    - product: وجبة عائلية
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12353'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب مشاوي مباشر
+  steps:
+  - intent: order_request
+    entities:
+    - product: مشاوي
+  - slot_was_set:
+    - product: مشاوي
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: مشاوي
+  - slot_was_set:
+    - product: مشاوي
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12354'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب حسب ميزانية 50000
+  steps:
+  - intent: order_by_budget
+    entities:
+    - budget: 50000
+  - slot_was_set:
+    - budget: 50000
+  - action: utter_searching
+  - action: action_handle_budget
+  - action: utter_recommendation
+  - intent: add_to_cart
+    entities:
+    - product: بيتزا عائلية
+  - slot_was_set:
+    - product: بيتزا عائلية
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12355'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب حسب ميزانية 30000
+  steps:
+  - intent: order_by_budget
+    entities:
+    - budget: 30000
+  - slot_was_set:
+    - budget: 30000
+  - action: utter_searching
+  - action: action_handle_budget
+  - action: utter_recommendation
+  - intent: add_to_cart
+    entities:
+    - product: شاورما
+  - slot_was_set:
+    - product: شاورما
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12356'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب حسب ميزانية 40000
+  steps:
+  - intent: order_by_budget
+    entities:
+    - budget: 40000
+  - slot_was_set:
+    - budget: 40000
+  - action: utter_searching
+  - action: action_handle_budget
+  - action: utter_recommendation
+  - intent: add_to_cart
+    entities:
+    - product: برغر
+  - slot_was_set:
+    - product: برغر
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12357'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب حسب ميزانية 60000
+  steps:
+  - intent: order_by_budget
+    entities:
+    - budget: 60000
+  - slot_was_set:
+    - budget: 60000
+  - action: utter_searching
+  - action: action_handle_budget
+  - action: utter_recommendation
+  - intent: add_to_cart
+    entities:
+    - product: وجبة دجاج
+  - slot_was_set:
+    - product: وجبة دجاج
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12358'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب حسب ميزانية 70000
+  steps:
+  - intent: order_by_budget
+    entities:
+    - budget: 70000
+  - slot_was_set:
+    - budget: 70000
+  - action: utter_searching
+  - action: action_handle_budget
+  - action: utter_recommendation
+  - intent: add_to_cart
+    entities:
+    - product: مشاوي
+  - slot_was_set:
+    - product: مشاوي
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12359'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: بيتزا مع ميزانية 50000
+  steps:
+  - intent: order_product_budget
+    entities:
+    - product: بيتزا
+    - budget: 50000
+  - slot_was_set:
+    - product: بيتزا
+    - budget: 50000
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: بيتزا
+  - slot_was_set:
+    - product: بيتزا
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12360'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: شاورما مع ميزانية 30000
+  steps:
+  - intent: order_product_budget
+    entities:
+    - product: شاورما
+    - budget: 30000
+  - slot_was_set:
+    - product: شاورما
+    - budget: 30000
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: شاورما
+  - slot_was_set:
+    - product: شاورما
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12361'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: برغر مع ميزانية 40000
+  steps:
+  - intent: order_product_budget
+    entities:
+    - product: برغر
+    - budget: 40000
+  - slot_was_set:
+    - product: برغر
+    - budget: 40000
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: برغر
+  - slot_was_set:
+    - product: برغر
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12362'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: كنافة مع ميزانية 15000
+  steps:
+  - intent: order_product_budget
+    entities:
+    - product: كنافة
+    - budget: 15000
+  - slot_was_set:
+    - product: كنافة
+    - budget: 15000
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: كنافة
+  - slot_was_set:
+    - product: كنافة
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12363'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب بيتزا من مطعم النور
+  steps:
+  - intent: order_from_store
+    entities:
+    - product: بيتزا
+    - store: مطعم النور
+  - slot_was_set:
+    - product: بيتزا
+    - store: مطعم النور
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: بيتزا
+  - slot_was_set:
+    - product: بيتزا
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12364'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب شاورما من مطعم الشام
+  steps:
+  - intent: order_from_store
+    entities:
+    - product: شاورما
+    - store: مطعم الشام
+  - slot_was_set:
+    - product: شاورما
+    - store: مطعم الشام
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: شاورما
+  - slot_was_set:
+    - product: شاورما
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12365'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب برغر من Falcon Restaurant
+  steps:
+  - intent: order_from_store
+    entities:
+    - product: برغر
+    - store: Falcon Restaurant
+  - slot_was_set:
+    - product: برغر
+    - store: Falcon Restaurant
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: برغر
+  - slot_was_set:
+    - product: برغر
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12366'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب مناقيش من مطعم السعادة
+  steps:
+  - intent: order_from_store
+    entities:
+    - product: مناقيش
+    - store: مطعم السعادة
+  - slot_was_set:
+    - product: مناقيش
+    - store: مطعم السعادة
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: مناقيش
+  - slot_was_set:
+    - product: مناقيش
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12367'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب مفصل بيتزا من النور بحدود 50000
+  steps:
+  - intent: detailed_order_request
+    entities:
+    - product: بيتزا عائلية
+    - store: مطعم النور
+    - budget: 50000
+  - slot_was_set:
+    - product: بيتزا عائلية
+    - store: مطعم النور
+    - budget: 50000
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: بيتزا عائلية
+  - slot_was_set:
+    - product: بيتزا عائلية
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12368'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب مفصل شاورما من الشام تحت 30000
+  steps:
+  - intent: detailed_order_request
+    entities:
+    - product: شاورما
+    - store: مطعم الشام
+    - budget: 30000
+  - slot_was_set:
+    - product: شاورما
+    - store: مطعم الشام
+    - budget: 30000
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: شاورما
+  - slot_was_set:
+    - product: شاورما
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12369'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب مفصل برغر من النور بسعر 40000
+  steps:
+  - intent: detailed_order_request
+    entities:
+    - product: برغر
+    - store: مطعم النور
+    - budget: 40000
+  - slot_was_set:
+    - product: برغر
+    - store: مطعم النور
+    - budget: 40000
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: برغر
+  - slot_was_set:
+    - product: برغر
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12370'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب مفصل كنافة من الحلويات بحدود 12000
+  steps:
+  - intent: detailed_order_request
+    entities:
+    - product: كنافة
+    - store: حلويات الشام
+    - budget: 12000
+  - slot_was_set:
+    - product: كنافة
+    - store: حلويات الشام
+    - budget: 12000
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: كنافة
+  - slot_was_set:
+    - product: كنافة
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12371'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب بيتزا خلال نصف ساعة
+  steps:
+  - intent: order_with_delivery_time
+    entities:
+    - product: بيتزا
+    - delivery_time: نصف ساعة
+  - slot_was_set:
+    - product: بيتزا
+    - delivery_time: نصف ساعة
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: بيتزا
+  - slot_was_set:
+    - product: بيتزا
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12372'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب شاورما خلال 30 دقيقة
+  steps:
+  - intent: order_with_delivery_time
+    entities:
+    - product: شاورما
+    - delivery_time: 30 دقيقة
+  - slot_was_set:
+    - product: شاورما
+    - delivery_time: 30 دقيقة
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: شاورما
+  - slot_was_set:
+    - product: شاورما
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12373'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب برغر خلال ساعة
+  steps:
+  - intent: order_with_delivery_time
+    entities:
+    - product: برغر
+    - delivery_time: ساعة
+  - slot_was_set:
+    - product: برغر
+    - delivery_time: ساعة
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: برغر
+  - slot_was_set:
+    - product: برغر
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12374'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب كامل بيتزا من النور خلال نصف ساعة بحدود 50000
+  steps:
+  - intent: full_order_request
+    entities:
+    - product: بيتزا عائلية
+    - store: مطعم النور
+    - budget: 50000
+    - delivery_time: نصف ساعة
+  - slot_was_set:
+    - product: بيتزا عائلية
+    - store: مطعم النور
+    - budget: 50000
+    - delivery_time: نصف ساعة
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: بيتزا عائلية
+  - slot_was_set:
+    - product: بيتزا عائلية
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12375'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب كامل شاورما من الشام بحدود 30000 خلال 30 دقيقة
+  steps:
+  - intent: full_order_request
+    entities:
+    - product: شاورما
+    - store: مطعم الشام
+    - budget: 30000
+    - delivery_time: 30 دقيقة
+  - slot_was_set:
+    - product: شاورما
+    - store: مطعم الشام
+    - budget: 30000
+    - delivery_time: 30 دقيقة
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: شاورما
+  - slot_was_set:
+    - product: شاورما
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12376'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب كامل برغر من النور بسعر 40000 خلال ساعة
+  steps:
+  - intent: full_order_request
+    entities:
+    - product: برغر
+    - store: مطعم النور
+    - budget: 40000
+    - delivery_time: ساعة
+  - slot_was_set:
+    - product: برغر
+    - store: مطعم النور
+    - budget: 40000
+    - delivery_time: ساعة
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: برغر
+  - slot_was_set:
+    - product: برغر
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12377'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب كامل وجبة دجاج من السعادة بحدود 60000 خلال 45 دقيقة
+  steps:
+  - intent: full_order_request
+    entities:
+    - product: وجبة دجاج
+    - store: مطعم السعادة
+    - budget: 60000
+    - delivery_time: 45 دقيقة
+  - slot_was_set:
+    - product: وجبة دجاج
+    - store: مطعم السعادة
+    - budget: 60000
+    - delivery_time: 45 دقيقة
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: وجبة دجاج
+  - slot_was_set:
+    - product: وجبة دجاج
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12378'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب كامل كنافة من الحلويات بحدود 15000 خلال نصف ساعة
+  steps:
+  - intent: full_order_request
+    entities:
+    - product: كنافة
+    - store: حلويات الشام
+    - budget: 15000
+    - delivery_time: نصف ساعة
+  - slot_was_set:
+    - product: كنافة
+    - store: حلويات الشام
+    - budget: 15000
+    - delivery_time: نصف ساعة
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: كنافة
+  - slot_was_set:
+    - product: كنافة
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12379'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب كامل مشاوي من الشام بحدود 80000 خلال ساعة
+  steps:
+  - intent: full_order_request
+    entities:
+    - product: مشاوي
+    - store: مطعم الشام
+    - budget: 80000
+    - delivery_time: ساعة
+  - slot_was_set:
+    - product: مشاوي
+    - store: مطعم الشام
+    - budget: 80000
+    - delivery_time: ساعة
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: مشاوي
+  - slot_was_set:
+    - product: مشاوي
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12380'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: نموذج طلب كامل تدريجي
+  steps:
+  - intent: order_request
+  - action: order_form
+  - active_loop: order_form
+  - slot_was_set:
+    - requested_slot: product
+  - intent: inform
+    entities:
+    - product: بيتزا عائلية
+  - slot_was_set:
+    - product: بيتزا عائلية
+  - slot_was_set:
+    - requested_slot: budget
+  - intent: inform
+    entities:
+    - budget: 50000
+  - slot_was_set:
+    - budget: 50000
+  - slot_was_set:
+    - requested_slot: store
+  - intent: inform
+    entities:
+    - store: مطعم النور
+  - slot_was_set:
+    - store: مطعم النور
+  - slot_was_set:
+    - requested_slot: delivery_time
+  - intent: inform
+    entities:
+    - delivery_time: نصف ساعة
+  - slot_was_set:
+    - delivery_time: نصف ساعة
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: utter_submit
+  - action: utter_slots_values
+  - action: utter_searching
+  - action: action_search_products
+  - action: utter_recommendation
+  - intent: add_to_cart
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12381'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب توصية ثم إضافة
+  steps:
+  - intent: ask_recommendation
+  - action: utter_recommendation
+  - intent: add_to_cart
+    entities:
+    - product: شاورما
+  - slot_was_set:
+    - product: شاورما
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12386'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: طلب توصية وإضافة عدة منتجات
+  steps:
+  - intent: ask_recommendation
+  - action: utter_recommendation
+  - intent: add_to_cart
+    entities:
+    - product: بيتزا عائلية
+  - slot_was_set:
+    - product: بيتزا عائلية
+  - action: action_add_to_cart
+  - intent: add_to_cart
+    entities:
+    - product: عصير برتقال
+  - slot_was_set:
+    - product: عصير برتقال
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12387'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: توصية ثم عرض السلة
+  steps:
+  - intent: ask_recommendation
+  - action: utter_recommendation
+  - intent: add_to_cart
+    entities:
+    - product: برغر
+  - slot_was_set:
+    - product: برغر
+  - action: action_add_to_cart
+  - intent: show_cart
+  - action: utter_show_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12388'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: إضافة للسلة مباشرة
+  steps:
+  - intent: add_to_cart
+    entities:
+    - product: كنافة
+    - quantity: 2
+  - slot_was_set:
+    - product: كنافة
+    - quantity: 2
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12389'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: تتبع طلب برقم
+  steps:
+  - intent: track_order
+    entities:
+    - order_id: '12345'
+  - slot_was_set:
+    - order_id: '12345'
+  - action: action_track_order
+- story: تتبع طلب بدون رقم
+  steps:
+  - intent: track_order
+  - action: track_form
+  - active_loop: track_form
+  - slot_was_set:
+    - requested_slot: order_id
+  - intent: inform
+    entities:
+    - order_id: '67890'
+  - slot_was_set:
+    - order_id: '67890'
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_track_order
+- story: استعلام عن حالة الطلب
+  steps:
+  - intent: ask_status
+    entities:
+    - order_id: '12345'
+  - slot_was_set:
+    - order_id: '12345'
+  - action: action_track_order
+- story: تتبع ثم إلغاء
+  steps:
+  - intent: track_order
+    entities:
+    - order_id: '12345'
+  - slot_was_set:
+    - order_id: '12345'
+  - action: action_track_order
+  - intent: cancel
+  - action: action_cancel_order
+  - slot_was_set:
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+    - quantity: null
+    - payment_method: null
+    - cart: []
+- story: تعديل الطلب
+  steps:
+  - intent: edit_order
+    entities:
+    - product: بيتزا
+  - slot_was_set:
+    - product: بيتزا
+  - action: action_edit_order
+  - action: utter_edit_confirmation
+- story: إلغاء بعد الطلب مباشرة
+  steps:
+  - intent: order_request
+    entities:
+    - product: بيتزا
+  - slot_was_set:
+    - product: بيتزا
+  - action: utter_searching
+  - action: action_search_products
+  - intent: cancel
+  - action: action_cancel_order
+  - slot_was_set:
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+    - quantity: null
+    - payment_method: null
+    - cart: []
+- story: إلغاء بعد الإضافة للسلة
+  steps:
+  - intent: order_request
+    entities:
+    - product: شاورما
+  - slot_was_set:
+    - product: شاورما
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: شاورما
+  - slot_was_set:
+    - product: شاورما
+  - action: action_add_to_cart
+  - intent: cancel
+  - action: action_cancel_order
+  - slot_was_set:
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+    - quantity: null
+    - payment_method: null
+    - cart: []
+- story: إلغاء أثناء نموذج الطلب
+  steps:
+  - intent: order_request
+  - action: order_form
+  - active_loop: order_form
+  - slot_was_set:
+    - requested_slot: product
+  - intent: cancel
+  - action: action_deactivate_loop
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_cancel_order
+  - slot_was_set:
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+    - quantity: null
+    - payment_method: null
+    - cart: []
+- story: إلغاء أثناء التتبع
+  steps:
+  - intent: track_order
+    entities:
+    - order_id: '12345'
+  - slot_was_set:
+    - order_id: '12345'
+  - action: action_track_order
+  - intent: cancel
+  - action: action_cancel_order
+  - slot_was_set:
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+    - quantity: null
+    - payment_method: null
+    - cart: []
+- story: تقييم مباشر
+  steps:
+  - intent: rate_order
+  - action: rating_form
+  - active_loop: rating_form
+  - slot_was_set:
+    - requested_slot: rating
+  - intent: inform
+    entities:
+    - rating: 5
+  - slot_was_set:
+    - rating: 5
+  - slot_was_set:
+    - requested_slot: comment
+  - intent: inform
+  - slot_was_set:
+    - comment: خدمة ممتازة
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_submit_rating
+  - slot_was_set:
+    - rating: null
+    - comment: null
+- story: تقييم بعد التتبع
+  steps:
+  - intent: track_order
+    entities:
+    - order_id: '12345'
+  - slot_was_set:
+    - order_id: '12345'
+  - action: action_track_order
+  - intent: rate_order
+  - action: rating_form
+  - active_loop: rating_form
+  - slot_was_set:
+    - requested_slot: rating
+  - intent: inform
+    entities:
+    - rating: 4
+  - slot_was_set:
+    - rating: 4
+  - slot_was_set:
+    - requested_slot: comment
+  - intent: inform
+  - slot_was_set:
+    - comment: جيد
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_submit_rating
+  - slot_was_set:
+    - rating: null
+    - comment: null
+- story: تقييم سيء
+  steps:
+  - intent: rate_order
+  - action: rating_form
+  - active_loop: rating_form
+  - slot_was_set:
+    - requested_slot: rating
+  - intent: inform
+    entities:
+    - rating: 1
+  - slot_was_set:
+    - rating: 1
+  - slot_was_set:
+    - requested_slot: comment
+  - intent: inform
+  - slot_was_set:
+    - comment: تأخر الطلب كثيراً
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_submit_rating
+  - slot_was_set:
+    - rating: null
+    - comment: null
+- story: شكوى تأخر الطلب
+  steps:
+  - intent: complain
+    entities:
+    - complaint_type: تأخر
+  - slot_was_set:
+    - complaint_type: تأخر
+  - action: complain_form
+  - active_loop: complain_form
+  - slot_was_set:
+    - requested_slot: comment
+  - intent: inform
+  - slot_was_set:
+    - comment: الطلب تأخر أكثر من ساعة
+  - slot_was_set:
+    - requested_slot: order_id
+  - intent: inform
+    entities:
+    - order_id: '12345'
+  - slot_was_set:
+    - order_id: '12345'
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_handle_complaint
+  - slot_was_set:
+    - complaint_type: null
+    - comment: null
+    - order_id: null
+- story: شكوى منتج خاطئ
+  steps:
+  - intent: complain
+    entities:
+    - complaint_type: منتج خاطئ
+  - slot_was_set:
+    - complaint_type: منتج خاطئ
+  - action: complain_form
+  - active_loop: complain_form
+  - slot_was_set:
+    - requested_slot: comment
+  - intent: inform
+  - slot_was_set:
+    - comment: وصلني برغر بدلاً من شاورما
+  - slot_was_set:
+    - requested_slot: order_id
+  - intent: inform
+    entities:
+    - order_id: '12346'
+  - slot_was_set:
+    - order_id: '12346'
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_handle_complaint
+  - slot_was_set:
+    - complaint_type: null
+    - comment: null
+    - order_id: null
+- story: شكوى سوء تعامل السائق
+  steps:
+  - intent: complain
+    entities:
+    - complaint_type: سوء تعامل
+  - slot_was_set:
+    - complaint_type: سوء تعامل
+  - action: complain_form
+  - active_loop: complain_form
+  - slot_was_set:
+    - requested_slot: comment
+  - intent: inform
+  - slot_was_set:
+    - comment: السائق كان غير مهذب
+  - slot_was_set:
+    - requested_slot: order_id
+  - intent: inform
+    entities:
+    - order_id: '12347'
+  - slot_was_set:
+    - order_id: '12347'
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_handle_complaint
+  - slot_was_set:
+    - complaint_type: null
+    - comment: null
+    - order_id: null
+- story: شكوى منتج تالف
+  steps:
+  - intent: complain
+    entities:
+    - complaint_type: منتج تالف
+  - slot_was_set:
+    - complaint_type: منتج تالف
+  - action: complain_form
+  - active_loop: complain_form
+  - slot_was_set:
+    - requested_slot: comment
+  - intent: inform
+  - slot_was_set:
+    - comment: الكنافة كانت محروقة
+  - slot_was_set:
+    - requested_slot: order_id
+  - intent: inform
+    entities:
+    - order_id: '12348'
+  - slot_was_set:
+    - order_id: '12348'
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_handle_complaint
+  - slot_was_set:
+    - complaint_type: null
+    - comment: null
+    - order_id: null
+- story: مشكلة دفع ثم تحويل لنقدي
+  steps:
+  - intent: payment_issue
+  - action: utter_payment_issue
+  - intent: inform
+    entities:
+    - payment_method: cash
+  - slot_was_set:
+    - payment_method: cash
+  - action: action_payment_process
+- story: مشكلة ShamCash
+  steps:
+  - intent: payment_issue
+    entities:
+    - payment_method: ShamCash
+  - slot_was_set:
+    - payment_method: ShamCash
+  - action: utter_payment_issue
+  - intent: cancel
+  - action: action_cancel_order
+  - slot_was_set:
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+    - quantity: null
+    - payment_method: null
+    - cart: []
+- story: استعلام عن رسوم التوصيل
+  steps:
+  - intent: ask_delivery_fee
+  - action: utter_faq_cost
+- story: سؤال عن ساعات العمل
+  steps:
+  - intent: ask_working_hours
+  - action: utter_faq_time
+- story: سؤال عام متكرر
+  steps:
+  - intent: ask_faq
+  - action: utter_default_faq
+- story: طلب عروض اليوم
+  steps:
+  - intent: ask_promotion
+  - action: action_show_promotions
+- story: استعلام عن عروض المنطقة
+  steps:
+  - intent: ask_local_offers
+    entities:
+    - area: دمشق
+  - slot_was_set:
+    - area: دمشق
+  - action: action_show_local_offers
+- story: عرض تاريخ الطلبات
+  steps:
+  - intent: order_history
+  - action: action_show_order_history
+- story: تاريخ ثم إعادة طلب
+  steps:
+  - intent: order_history
+  - action: action_show_order_history
+  - intent: order_request
+    entities:
+    - product: بيتزا عائلية
+  - slot_was_set:
+    - product: بيتزا عائلية
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12393'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: عرض السلة الفارغة
+  steps:
+  - intent: show_cart
+  - action: utter_show_cart
+- story: عرض السلة بعد الإضافة
+  steps:
+  - intent: add_to_cart
+    entities:
+    - product: بيتزا
+  - slot_was_set:
+    - product: بيتزا
+  - action: action_add_to_cart
+  - intent: show_cart
+  - action: utter_show_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12394'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: إضافة متعددة ثم عرض السلة
+  steps:
+  - intent: add_to_cart
+    entities:
+    - product: بيتزا
+  - slot_was_set:
+    - product: بيتزا
+  - action: action_add_to_cart
+  - intent: add_to_cart
+    entities:
+    - product: عصير برتقال
+  - slot_was_set:
+    - product: عصير برتقال
+  - action: action_add_to_cart
+  - intent: show_cart
+  - action: utter_show_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12395'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+- story: التواصل مع الدعم
+  steps:
+  - intent: contact_support
+  - action: action_contact_support
+- story: دعم بعد مشكلة
+  steps:
+  - intent: payment_issue
+  - action: utter_payment_issue
+  - intent: contact_support
+  - action: action_contact_support
+- story: دعم بعد شكوى
+  steps:
+  - intent: complain
+  - action: complain_form
+  - active_loop: complain_form
+  - slot_was_set:
+    - requested_slot: complaint_type
+  - intent: inform
+    entities:
+    - complaint_type: أخرى
+  - slot_was_set:
+    - complaint_type: أخرى
+  - slot_was_set:
+    - requested_slot: comment
+  - intent: inform
+  - slot_was_set:
+    - comment: مشكلة في التطبيق
+  - slot_was_set:
+    - requested_slot: order_id
+  - intent: inform
+    entities:
+    - order_id: '12349'
+  - slot_was_set:
+    - order_id: '12349'
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_handle_complaint
+  - slot_was_set:
+    - complaint_type: null
+    - comment: null
+    - order_id: null
+  - intent: contact_support
+  - action: action_contact_support
+- story: سؤال عن منتج
+  steps:
+  - intent: ask_about_product
+    entities:
+    - product: بيتزا
+  - slot_was_set:
+    - product: بيتزا
+  - action: action_show_product_details
+- story: سؤال عن مكونات
+  steps:
+  - intent: ask_about_product
+    entities:
+    - product: شاورما
+  - slot_was_set:
+    - product: شاورما
+  - action: action_show_product_details
+- story: حوار طويل متكامل
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_recommendation
+  - action: utter_recommendation
+  - intent: add_to_cart
+    entities:
+    - product: بيتزا عائلية
+  - slot_was_set:
+    - product: بيتزا عائلية
+  - action: action_add_to_cart
+  - intent: add_to_cart
+    entities:
+    - product: عصير برتقال
+  - slot_was_set:
+    - product: عصير برتقال
+  - action: action_add_to_cart
+  - intent: show_cart
+  - action: utter_show_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12397'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+  - intent: track_order
+    entities:
+    - order_id: '12397'
+  - slot_was_set:
+    - order_id: '12397'
+  - action: action_track_order
+  - intent: rate_order
+  - action: rating_form
+  - active_loop: rating_form
+  - slot_was_set:
+    - requested_slot: rating
+  - intent: inform
+    entities:
+    - rating: 5
+  - slot_was_set:
+    - rating: 5
+  - slot_was_set:
+    - requested_slot: comment
+  - intent: inform
+  - slot_was_set:
+    - comment: تجربة ممتازة
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_submit_rating
+  - slot_was_set:
+    - rating: null
+    - comment: null
+  - intent: goodbye
+  - action: utter_goodbye
+- story: حوار معقد - إلغاء ثم طلب جديد
+  steps:
+  - intent: order_request
+    entities:
+    - product: برغر
+  - slot_was_set:
+    - product: برغر
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: برغر
+  - slot_was_set:
+    - product: برغر
+  - action: action_add_to_cart
+  - intent: cancel
+  - action: action_cancel_order
+  - slot_was_set:
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+    - quantity: null
+    - payment_method: null
+    - cart: []
+  - intent: order_request
+    entities:
+    - product: شاورما
+  - slot_was_set:
+    - product: شاورما
+  - action: utter_searching
+  - action: action_search_products
+  - intent: add_to_cart
+    entities:
+    - product: شاورما
+  - slot_was_set:
+    - product: شاورما
+  - action: action_add_to_cart
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+  - slot_was_set:
+    - order_id: '12398'
+    - product: null
+    - budget: null
+    - store: null
+    - delivery_time: null
+  - intent: track_order
+    entities:
+    - order_id: '12398'
+  - slot_was_set:
+    - order_id: '12398'
+  - action: action_track_order

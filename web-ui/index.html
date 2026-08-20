@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦅 Falcon Delivery – مساعد التوصيل الذكي</title>
+    <style>
+        /* ═══════════════════════════════════════════════════════
+           الألوان والثيمات
+           ═══════════════════════════════════════════════════════ */
+        :root {
+            --primary: #1a3a5c;
+            --primary-light: #2a5a8c;
+            --secondary: #e8b931;
+            --secondary-light: #f5d96a;
+            --bg-dark: #0f1a2b;
+            --bg-card: #1a2a3f;
+            --bg-user: #2a5a8c;
+            --bg-bot: #1e3a5c;
+            --text-light: #f0f4f8;
+            --text-muted: #a0b8d0;
+            --text-white: #ffffff;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.3s ease;
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           إعادة ضبط عام
+           ═══════════════════════════════════════════════════════ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Tahoma', 'Arial', sans-serif;
+            background: var(--bg-dark);
+            background-image: radial-gradient(ellipse at 20% 50%, #1a3a5c 0%, transparent 60%),
+                              radial-gradient(ellipse at 80% 50%, #0f1a2b 0%, transparent 60%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           الحاوية الرئيسية (بطاقة المحادثة)
+           ═══════════════════════════════════════════════════════ */
+        .chat-container {
+            width: 100%;
+            max-width: 550px;
+            height: 92vh;
+            max-height: 800px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           رأس الواجهة (Header)
+           ═══════════════════════════════════════════════════════ */
+        .chat-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            padding: 18px 24px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border-bottom: 2px solid var(--secondary);
+            flex-shrink: 0;
+        }
+
+        .chat-header .logo {
+            font-size: 32px;
+            line-height: 1;
+        }
+
+        .chat-header .info {
+            flex: 1;
+        }
+
+        .chat-header .info h1 {
+            color: var(--text-white);
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+
+        .chat-header .info .subtitle {
+            color: var(--secondary-light);
+            font-size: 13px;
+            font-weight: 400;
+            opacity: 0.9;
+            margin: 2px 0 0;
+        }
+
+        .chat-header .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .chat-header .status .dot {
+            width: 10px;
+            height: 10px;
+            background: #4caf50;
+            border-radius: 50%;
+            animation: pulse-dot 1.5s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           منطقة الرسائل (Messages)
+           ═══════════════════════════════════════════════════════ */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 18px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.15);
+            scroll-behavior: smooth;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           الرسائل الفردية
+           ═══════════════════════════════════════════════════════ */
+        .message {
+            display: flex;
+            flex-direction: column;
+            max-width: 88%;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            align-self: flex-end;
+            align-items: flex-end;
+        }
+
+        .message.bot {
+            align-self: flex-start;
+            align-items: flex-start;
+        }
+
+        .message .bubble {
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            line-height: 1.6;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            max-width: 100%;
+            position: relative;
+        }
+
+        .message.user .bubble {
+            background: var(--bg-user);
+            color: var(--text-white);
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 2px 8px rgba(42, 90, 140, 0.3);
+        }
+
+        .message.bot .bubble {
+            background: var(--bg-bot);
+            color: var(--text-light);
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .message .time {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            padding: 0 4px;
+            opacity: 0.7;
+        }
+
+        .message.user .time {
+            align-self: flex-end;
+        }
+
+        .message.bot .time {
+            align-self: flex-start;
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           أزرار الردود السريعة (Quick Replies)
+           ═══════════════════════════════════════════════════════ */
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+            max-width: 100%;
+        }
+
+        .quick-replies .qr-btn {
+            background: rgba(232, 185, 49, 0.12);
+            border: 1px solid rgba(232, 185, 49, 0.3);
+            color: var(--secondary-light);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .quick-replies .qr-btn:hover {
+            background: rgba(232, 185, 49, 0.25);
+            border-color: var(--secondary);
+            transform: translateY(-1px);
+        }
+
+        .quick-replies .qr-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           مؤشر الكتابة (Typing Indicator)
+           ═══════════════════════════════════════════════════════ */
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: var(--bg-bot);
+            border-radius: var(--radius-sm);
+            border-bottom-left-radius: 4px;
+            max-width: 70px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .typing-indicator .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            animation: typing-bounce 1.4s infinite;
+        }
+
+        .typing-indicator .dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator .dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing-bounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-6px); opacity: 1; }
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           منطقة الإدخال (Input)
+           ═══════════════════════════════════════════════════════ */
+        .chat-input-area {
+            padding: 14px 18px 18px;
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .chat-input-area .input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .chat-input-area textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            font-size: 15px;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            transition: var(--transition);
+            min-height: 48px;
+            max-height: 120px;
+            line-height: 1.5;
+        }
+
+        .chat-input-area textarea::placeholder {
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
+
+        .chat-input-area textarea:focus {
+            border-color: var(--secondary);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(232, 185, 49, 0.1);
+        }
+
+        .chat-input-area .btn-send {
+            background: var(--secondary);
+            color: var(--bg-dark);
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 12px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: var(--transition);
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .chat-input-area .btn-send:hover {
+            background: var(--secondary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(232, 185, 49, 0.3);
+        }
+
+        .chat-input-area .btn-send:active {
+            transform: scale(0.95);
+        }
+
+        .chat-input-area .btn-send:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           رسالة الترحيب الأولية (Welcome)
+           ═══════════════════════════════════════════════════════ */
+        .welcome-message .bubble {
+            background: linear-gradient(135deg, #1a3a5c, #2a4a7c) !important;
+            border: 1px solid rgba(232, 185, 49, 0.15) !important;
+        }
+
+        .welcome-message .bubble strong {
+            color: var(--secondary-light);
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           التجاوب مع الشاشات الصغيرة
+           ═══════════════════════════════════════════════════════ */
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .chat-container {
+                height: 96vh;
+                max-height: none;
+                border-radius: 12px;
+            }
+            .chat-header { padding: 14px 16px; }
+            .chat-header .info h1 { font-size: 17px; }
+            .chat-messages { padding: 14px 12px; }
+            .message .bubble { font-size: 14px; padding: 10px 14px; }
+            .chat-input-area { padding: 10px 14px 14px; }
+            .chat-input-area textarea { font-size: 14px; }
+        }
+
+        @media (max-width: 400px) {
+            .chat-header .status { display: none; }
+            .quick-replies .qr-btn { font-size: 12px; padding: 4px 10px; }
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           الرسائل التي تحتوي على أزرار (روابط) داخل النص
+           ═══════════════════════════════════════════════════════ */
+        .message .bubble a {
+            color: var(--secondary-light);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .message .bubble a:hover {
+            color: var(--secondary);
+        }
+
+        /* ═══════════════════════════════════════════════════════
+           تذييل صغير
+           ═══════════════════════════════════════════════════════ */
+        .chat-footer {
+            text-align: center;
+            padding: 6px 0 4px;
+            font-size: 11px;
+            color: var(--text-muted);
+            opacity: 0.4;
+            border-top: 1px solid rgba(255,255,255,0.03);
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!--  حاوية المحادثة الرئيسية                                     -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div class="chat-container" id="chatContainer">
+
+    <!-- رأس الواجهة -->
+    <div class="chat-header">
+        <span class="logo">🦅</span>
+        <div class="info">
+            <h1>Falcon Delivery</h1>
+            <p class="subtitle">⚡ مساعد التوصيل الذكي</p>
+        </div>
+        <div class="status">
+            <span class="dot"></span>
+            <span style="font-size:12px;">متصل</span>
+        </div>
+    </div>
+
+    <!-- منطقة الرسائل -->
+    <div class="chat-messages" id="chatMessages">
+
+        <!-- رسالة الترحيب الافتراضية -->
+        <div class="message bot welcome-message">
+            <div class="bubble">
+                <strong>🦅 مرحباً بك في Falcon Delivery!</strong><br>
+                أنا مساعدك الذكي، جاهز لمساعدتك في طلب وجبتك المفضلة، تتبع طلبك، أو استعراض العروض.<br><br>
+                📌 <strong>جرب كتابة:</strong><br>
+                • <em>"بدي بيتزا"</em><br>
+                • <em>"معي 50000 شو فيني اطلب"</em><br>
+                • <em>"تتبع طلبي رقم 12345"</em>
+            </div>
+            <span class="time">الآن</span>
+        </div>
+    </div>
+
+    <!-- مؤشر الكتابة -->
+    <div class="typing-indicator" id="typingIndicator">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+    </div>
+
+    <!-- منطقة الإدخال -->
+    <div class="chat-input-area">
+        <div class="input-wrapper">
+            <textarea id="userInput" rows="1" placeholder="اكتب رسالتك هنا..." aria-label="رسالة المستخدم"></textarea>
+        </div>
+        <button class="btn-send" id="sendButton" aria-label="إرسال">
+            <span>➤</span>
+        </button>
+    </div>
+
+    <!-- تذييل -->
+    <div class="chat-footer">
+        🦅 Falcon Delivery &bull; بشير الحبشي - عمر الهندي
+    </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!--  JavaScript – منطق التواصل مع خادم Rasa                     -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<script>
+    (function() {
+        'use strict';
+
+        // ──────────────────────────────────────────────────────
+        //  الثوابت والإعدادات
+        // ──────────────────────────────────────────────────────
+
+        const RASA_URL = 'http://localhost:5005/webhooks/rest/webhook';
+        const SENDER_ID = 'web_user_' + Math.random().toString(36).substr(2, 6);
+
+        const chatMessages = document.getElementById('chatMessages');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        let isProcessing = false;
+
+        // ──────────────────────────────────────────────────────
+        //  دوال مساعدة
+        // ──────────────────────────────────────────────────────
+
+        /** الحصول على الوقت الحالي بصيغة HH:MM */
+        function getTime() {
+            const now = new Date();
+            return now.getHours().toString().padStart(2, '0') + ':' +
+                   now.getMinutes().toString().padStart(2, '0');
+        }
+
+        /** إضافة رسالة إلى الواجهة */
+        function addMessage(text, sender, time = null) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${sender}`;
+
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            // تحويل النص إلى HTML مع دعم الروابط البسيطة
+            bubble.innerHTML = text.replace(/\n/g, '<br>');
+
+            const timeSpan = document.createElement('span');
+            timeSpan.className = 'time';
+            timeSpan.textContent = time || getTime();
+
+            msgDiv.appendChild(bubble);
+            msgDiv.appendChild(timeSpan);
+            chatMessages.appendChild(msgDiv);
+
+            // التمرير إلى الأسفل
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return msgDiv;
+        }
+
+        /** إضافة أزرار سريعة (Quick Replies) */
+        function addQuickReplies(buttons) {
+            const container = document.createElement('div');
+            container.className = 'quick-replies';
+
+            buttons.forEach(btn => {
+                const btnEl = document.createElement('button');
+                btnEl.className = 'qr-btn';
+                btnEl.textContent = btn.title;
+                btnEl.addEventListener('click', function() {
+                    // إرسال payload إذا كان موجوداً، وإلا إرسال النص
+                    const payload = btn.payload || btn.title;
+                    sendMessage(payload, true);
+                });
+                container.appendChild(btnEl);
+            });
+
+            // إضافة الأزرار أسفل آخر رسالة
+            const lastMsg = chatMessages.lastElementChild;
+            if (lastMsg) {
+                lastMsg.appendChild(container);
+            } else {
+                chatMessages.appendChild(container);
+            }
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        /** عرض/إخفاء مؤشر الكتابة */
+        function setTyping(visible) {
+            typingIndicator.style.display = visible ? 'flex' : 'none';
+            if (visible) {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }
+
+        /** إرسال رسالة إلى خادم Rasa */
+        function sendMessage(message, isQuickReply = false) {
+            if (isProcessing) return;
+            if (!message || message.trim() === '') return;
+
+            const cleanMsg = message.trim();
+
+            // إضافة رسالة المستخدم
+            addMessage(cleanMsg, 'user');
+
+            // مسح حقل الإدخال
+            userInput.value = '';
+            userInput.style.height = 'auto';
+            userInput.focus();
+
+            isProcessing = true;
+            sendButton.disabled = true;
+            setTyping(true);
+
+            // إعداد الطلب
+            const payload = {
+                sender: SENDER_ID,
+                message: cleanMsg
+            };
+
+            fetch(RASA_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                setTyping(false);
+
+                if (!data || data.length === 0) {
+                    addMessage('🤔 لم أستوعب طلبك. هل يمكنك إعادة صياغته؟', 'bot');
+                    return;
+                }
+
+                // معالجة الردود
+                let hasButtons = false;
+                data.forEach(response => {
+                    if (response.text) {
+                        addMessage(response.text, 'bot');
+                    }
+                    if (response.buttons && response.buttons.length > 0) {
+                        hasButtons = true;
+                        addQuickReplies(response.buttons);
+                    }
+                });
+
+                // إذا لم تكن هناك أزرار، يمكننا إضافة اقتراحات تلقائية
+                if (!hasButtons) {
+                    // لا شيء، فقط انتظر رد المستخدم
+                }
+            })
+            .catch(error => {
+                setTyping(false);
+                console.error('❌ خطأ في الاتصال بـ Rasa:', error);
+                addMessage(
+                    '⚠️ **عذراً، حدث خطأ في الاتصال بالخادم.**<br>' +
+                    'تأكد من تشغيل Rasa عبر الأمر: <code>rasa run --enable-api --cors "*" --port 5005</code>',
+                    'bot'
+                );
+            })
+            .finally(() => {
+                isProcessing = false;
+                sendButton.disabled = false;
+                // إذا كان الحقل فارغاً، نضبط التركيز
+                if (!userInput.value.trim()) {
+                    userInput.focus();
+                }
+            });
+        }
+
+        // ──────────────────────────────────────────────────────
+        //  أحداث المستخدم
+        // ──────────────────────────────────────────────────────
+
+        // زر الإرسال
+        sendButton.addEventListener('click', function() {
+            const msg = userInput.value.trim();
+            if (msg) sendMessage(msg);
+        });
+
+        // الضغط على Enter (Shift+Enter لإضافة سطر جديد)
+        userInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                const msg = this.value.trim();
+                if (msg) sendMessage(msg);
+            }
+        });
+
+        // ضبط ارتفاع حقل الإدخال تلقائياً
+        userInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        // ──────────────────────────────────────────────────────
+        //  بدء التشغيل – اختبار الاتصال بالخادم
+        // ──────────────────────────────────────────────────────
+
+        // التحقق من أن الخادم يعمل عند تحميل الصفحة
+        function checkServer() {
+            fetch('http://localhost:5005/status', {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(res => {
+                if (res.ok) {
+                    console.log('✅ خادم Rasa يعمل على المنفذ 5005');
+                } else {
+                    console.warn('⚠️ خادم Rasa يعمل ولكن الرد غير متوقع');
+                }
+            })
+            .catch(() => {
+                console.warn('⚠️ خادم Rasa غير متاح. تأكد من تشغيله.');
+                // نضيف رسالة تحذيرية في الواجهة بعد فترة قصيرة
+                setTimeout(() => {
+                    const warningMsg = document.querySelector('.welcome-message .bubble');
+                    if (warningMsg) {
+                        warningMsg.innerHTML +=
+                            '<br><br>⚠️ <strong>خادم Rasa غير متاح.</strong><br>' +
+                            'تأكد من تشغيله بالأمر: <code>rasa run --enable-api --cors "*" --port 5005</code>';
+                    }
+                }, 500);
+            });
+        }
+
+        // تركيز حقل الإدخال عند تحميل الصفحة
+        setTimeout(() => {
+            userInput.focus();
+        }, 300);
+
+        // فحص الخادم
+        checkServer();
+
+        // ──────────────────────────────────────────────────────
+        //  تصدير الدوال للاستخدام في Console (للتطوير)
+        // ──────────────────────────────────────────────────────
+
+        window.falcon = {
+            send: sendMessage,
+            clear: () => {
+                chatMessages.innerHTML = '';
+                addMessage('🔄 تم مسح المحادثة. ابدأ من جديد!', 'bot');
+            },
+            status: () => {
+                console.log(`🔗 خادم Rasa: ${RASA_URL}`);
+                console.log(`👤 معرف الجلسة: ${SENDER_ID}`);
+            }
+        };
+
+        console.log('🦅 Falcon Delivery – واجهة الاختبار جاهزة!');
+        console.log('📌 استخدم falcon.send("رسالة") للإرسال من Console.');
+
+    })();
+</script>
+
+</body>
+</html>

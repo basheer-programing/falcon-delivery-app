@@ -1,0 +1,180 @@
+version: "3.1"
+
+rules:
+- rule: الترحيب بالمستخدم
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- rule: توديع المستخدم
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: دردشة قصيرة
+  steps:
+  - intent: chitchat
+  - action: utter_chitchat
+
+- rule: قدرات المساعد
+  steps:
+  - intent: ask_capabilities
+  - action: utter_capabilities
+
+- rule: سؤال عام
+  steps:
+  - intent: ask_faq
+  - action: utter_default_faq
+
+- rule: رسوم التوصيل
+  steps:
+  - intent: ask_delivery_fee
+  - action: utter_faq_cost
+
+- rule: ساعات العمل
+  steps:
+  - intent: ask_working_hours
+  - action: utter_faq_time
+
+- rule: التواصل مع الدعم
+  steps:
+  - intent: contact_support
+  - action: action_contact_support
+
+- rule: عرض السلة
+  steps:
+  - intent: show_cart
+  - action: utter_show_cart
+
+- rule: التوصيات
+  steps:
+  - intent: ask_recommendation
+  - action: utter_recommendation
+
+- rule: توصية حسب السياق
+  steps:
+  - intent: smart_recommendation
+  - action: action_smart_recommendation
+
+- rule: اقتراح حسب الطقس
+  steps:
+  - intent: ask_weather_food
+  - action: action_contextual_help
+
+- rule: سؤال السعرات
+  steps:
+  - intent: ask_calories
+  - action: action_contextual_help
+
+- rule: وجبة الأطفال
+  steps:
+  - intent: ask_kids_meal
+  - action: action_contextual_help
+
+- rule: وجبة العائلة
+  steps:
+  - intent: ask_family_meal
+  - action: action_contextual_help
+
+- rule: وجبة المفاجأة
+  steps:
+  - intent: ask_surprise_meal
+  - action: action_contextual_help
+
+- rule: مقارنة الوجبات
+  steps:
+  - intent: compare_food
+  - action: action_contextual_help
+
+- rule: المطاعم التي تقبل البطاقة
+  steps:
+  - intent: ask_card_restaurants
+  - action: action_contextual_help
+
+- rule: الكود الترويجي
+  steps:
+  - intent: ask_promo_code
+  - action: action_contextual_help
+
+- rule: عنوان التوصيل
+  steps:
+  - intent: set_delivery_address
+  - action: action_contextual_help
+
+- rule: حساسية الطعام
+  steps:
+  - intent: ask_allergy_food
+  - action: action_contextual_help
+
+- rule: طلب عاجل
+  steps:
+  - intent: ask_urgent_food
+  - action: action_contextual_help
+
+- rule: شكر المستخدم
+  steps:
+  - intent: thanks
+  - action: utter_thanks
+
+- rule: عروض اليوم
+  steps:
+  - intent: ask_promotion
+  - action: action_show_promotions
+
+- rule: عروض المنطقة
+  steps:
+  - intent: ask_local_offers
+  - action: action_show_local_offers
+
+- rule: تاريخ الطلبات
+  steps:
+  - intent: order_history
+  - action: action_show_order_history
+
+- rule: تفاصيل المنتج
+  steps:
+  - intent: ask_about_product
+  - action: action_show_product_details
+
+- rule: مشكلة الدفع
+  steps:
+  - intent: payment_issue
+  - action: utter_payment_issue
+
+- rule: إضافة منتج للسلة
+  steps:
+  - intent: add_to_cart
+  - action: action_add_to_cart
+
+- rule: تأكيد الطلب
+  steps:
+  - intent: confirm_order
+  - action: action_confirm_order_logic
+
+- rule: حالة الطلب
+  steps:
+  - intent: ask_status
+  - action: action_track_order
+
+- rule: تعديل الطلب
+  steps:
+  - intent: edit_order
+  - action: action_edit_order
+  - action: utter_edit_confirmation
+
+- rule: بدء التقييم
+  steps:
+  - intent: rate_order
+  - action: rating_form
+  - active_loop: rating_form
+
+- rule: بدء الشكوى
+  steps:
+  - intent: complain
+  - action: complain_form
+  - active_loop: complain_form
+
+- rule: إعادة صياغة الرسالة غير المفهومة
+  steps:
+  - intent: nlu_fallback
+  - action: utter_ask_rephrase
